@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("/", [HomeController::class, "index"]);
+Route::get('/', [HomeController::class, "index"])->name("home");
 
+Route::prefix("/user")->name("user.")->group(function() {
+    Route::get("/register", [UserController::class, "register"]);
+    Route::post("/register", [UserController::class, "storeUser"])->name('register');
+    Route::get("/login", [UserController::class, "loginForm"])->name("loginForm");
+    Route::post("/login", [UserController::class, "login"])->name('login');
+});
 
+Route::prefix("/admin")->name("admin.")->group(function() {
+    Route::get("/register", [AdminController::class, "register"]);
+    Route::post("/register", [AdminController::class, "storeUser"])->name('register');
+    Route::get("/login", [AdminController::class, "loginForm"])->name("loginForm");
+    Route::post("/login", [AdminController::class, "login"])->name('login');
+});

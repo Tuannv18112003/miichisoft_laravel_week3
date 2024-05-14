@@ -16,7 +16,6 @@ class CheckMaintain
     public function handle(Request $request, Closure $next): Response
     {
         $maintain = env("MAINTAIN_MODE");
-        echo $maintain;
         if($maintain == "true") {
             abort(500);
         }
