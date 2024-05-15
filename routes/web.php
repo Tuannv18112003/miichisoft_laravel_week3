@@ -31,3 +31,16 @@ Route::prefix("/admin")->name("admin.")->group(function() {
     Route::get("/login", [AdminController::class, "loginForm"])->name("loginForm");
     Route::post("/login", [AdminController::class, "login"])->name('login');
 });
+
+
+
+Route::middleware(["guest:admin"])->prefix("/admin")->group(function() {
+    Route::get('/list', [HomeController::class, "list"])->name("list");
+    Route::get('/detail', [HomeController::class, "detail"])->name("detail");
+
+    Route::middleware(["authenAdmin"])->group(function() {
+        Route::get('/create', [HomeController::class, "create"])->name("create");
+        Route::get('/update', [HomeController::class, "update"])->name("update");
+        Route::get('/delete', [HomeController::class, "delete"])->name("delete");
+    });
+})->name("admin.");

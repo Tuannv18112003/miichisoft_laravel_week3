@@ -23,6 +23,9 @@
                                 </a>
                             </div>
                             <h2 class="fs-6 fw-normal text-center text-secondary mb-4">Sign in to your account</h2>
+                            @if(Session::has("error"))
+                                <div>{{Session::get('error')}}</div>
+                            @endif
                             <form action="{{route('user.login')}}" method="POST">
                                 @csrf
                                 <div class="row gy-2 overflow-hidden">
@@ -30,8 +33,8 @@
                                         <div class="form-floating mb-3">
                                             <input type="email" class="form-control" name="email" value="{{old('email')}}" id="email" placeholder="name@example.com">
                                             <label for="email" class="form-label">Email</label>
-                                            @error('firstname')
-                                            <div class="error">{{ $message }}</div>
+                                            @error('email')
+                                            <div class="error" style="color:red">{{ $message }}</div>
                                             @enderror
                                         </div>
                                     </div>
@@ -40,6 +43,9 @@
                                             <input type="password" class="form-control" name="password" value="{{old('password')}}" id="password" value="" placeholder="Password">
                                             <label for="password" class="form-label">Password</label>
                                         </div>
+                                        @error('password')
+                                            <div class="error" style="color:red">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="col-12">
                                         <div class="d-grid my-3">

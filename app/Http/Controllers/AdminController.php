@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AccountRequest;
 use App\Mail\sendMailRegister;
 use App\Models\Admin;
 use App\Models\User;
@@ -12,20 +13,22 @@ use Illuminate\Support\Facades\Mail;
 
 class AdminController extends Controller
 {
-    public function register(Request $request) {
+    public function register() {
         return view("admin.register");
     }
 
-    public function storeUser(Request $request) {
+    public function storeUser(AccountRequest $request) {
+        // dd($request);
 
         $admin = [
             "email" => $request->email,
-            "password" => Hash::make($request->password)
+            "password" => Hash::make($request->password),
+            "role" => $request->role
         ];
         $result = Admin::create($admin);
         if($result) {
             Mail::to($request->email)->send(new sendMailRegister());
-            return redirect()->route('home')->with("success", "Đăng ký thành công");
+            return redirect()->route('admin.list');
         }
     }
 
@@ -37,8 +40,8 @@ class AdminController extends Controller
         $dataLogin = $request->only(["email", "password"]);
         $checkLogin = Auth::guard("admin")->attempt($dataLogin);
         if (!$checkLogin) {
-            return redirect()->route("loginForm");
+            return redirect()->back()->with("error", "Tài khoản hoặc mật khẩu không chính xác");
         }
-        return redirect()->route("home");
+        return redirect()->route("list");
     }
 }

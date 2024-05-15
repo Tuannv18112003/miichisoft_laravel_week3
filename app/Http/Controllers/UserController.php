@@ -17,7 +17,6 @@ class UserController extends Controller
 
     public function storeUser(AccountRequest $request) {
         $param = $request->except('_token');
-        
         $result = User::create($param);
         if($result) {
             Mail::to($request->email)->send(new sendMailRegister());
@@ -29,10 +28,10 @@ class UserController extends Controller
         return view('user.login');
     }
 
-    public function login(Request $request) {
+    public function login(AccountRequest $request) {
         $credentials = $request->only('email', 'password');
         if (!Auth::attempt($credentials)) {
-            return redirect()->route("loginForm");
+            return redirect()->back()->with("error", "Tài khoản hoặc mật khẩu không chính xác");
         }
         return redirect()->route("home");
     }
