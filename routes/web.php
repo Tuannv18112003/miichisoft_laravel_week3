@@ -34,7 +34,7 @@ Route::prefix("/admin")->name("admin.")->group(function() {
 
 
 
-Route::middleware(["guest:admin"])->prefix("/admin")->group(function() {
+Route::middleware(["checkAdmin"])->prefix("/admin")->group(function() {
     Route::get('/list', [HomeController::class, "list"])->name("list");
     Route::get('/detail', [HomeController::class, "detail"])->name("detail");
 

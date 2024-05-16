@@ -28,7 +28,7 @@ class UserController extends Controller
         return view('user.login');
     }
 
-    public function login(AccountRequest $request) {
+    public function login(Request $request) {
         $credentials = $request->only('email', 'password');
         if (!Auth::attempt($credentials)) {
             return redirect()->back()->with("error", "Tài khoản hoặc mật khẩu không chính xác");
